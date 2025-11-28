@@ -20,64 +20,69 @@ const formTitle = document.getElementById("formTitle");
 const CATEGORIES = ["Public Space", "Tempat Wisata", "Restoran", "Toko"];
 
 async function loadLocations() {
-  listEl.innerHTML = "";
-  locationsData = await getAllLocations();
+  try {
+    listEl.innerHTML = "";
+    locationsData = await getAllLocations();
 
-  // Update kategori filter
-  updateCategoryFilter();
+    // Update kategori filter
+    updateCategoryFilter();
 
-  // Clear markers
-  Object.values(markers).forEach((m) => map.removeLayer(m));
-  markers = {};
+    // Clear markers
+    Object.values(markers).forEach((m) => map.removeLayer(m));
+    markers = {};
 
-  const filtered = locationsData.filter(
-    (l) => selectedCategory === "all" || l.category === selectedCategory
-  );
+    const filtered = locationsData.filter(
+      (l) => selectedCategory === "all" || l.category === selectedCategory
+    );
 
-  filtered.forEach((loc) => {
-    const [lng, lat] = loc.location.coordinates;
+    filtered.forEach((loc) => {
+      const [lng, lat] = loc.location.coordinates;
 
-    // Create marker dengan icon berdasarkan kategori
-    const marker = L.marker([lat, lng], {
-      icon: getMarkerIcon(loc.category),
-    }).addTo(map).bindPopup(`
-        <div style="min-width: 200px;">
-          <b>${loc.name}</b><br/>
-          <small>${loc.category}</small><br/>
-          ${
-            loc.description
-              ? `<p style="margin: 5px 0; font-size: 12px;">${loc.description}</p>`
-              : ""
-          }
-          <div style="margin-top: 8px; display: flex; gap: 5px;">
-            <button onclick="editLocation('${
-              loc._id
-            }')" style="flex: 1; padding: 5px; cursor: pointer;">✏️ Edit</button>
-            <button onclick="removeLocation('${
-              loc._id
-            }')" style="flex: 1; padding: 5px; cursor: pointer;">🗑 Delete</button>
+      // Create marker dengan icon berdasarkan kategori
+      const marker = L.marker([lat, lng], {
+        icon: getMarkerIcon(loc.category),
+      }).addTo(map).bindPopup(`
+          <div style="min-width: 200px;">
+            <b>${loc.name}</b><br/>
+            <small>${loc.category}</small><br/>
+            ${
+              loc.description
+                ? `<p style="margin: 5px 0; font-size: 12px;">${loc.description}</p>`
+                : ""
+            }
+            <div style="margin-top: 8px; display: flex; gap: 5px;">
+              <button onclick="editLocation('${
+                loc._id
+              }')" style="flex: 1; padding: 5px; cursor: pointer;">✏️ Edit</button>
+              <button onclick="removeLocation('${
+                loc._id
+              }')" style="flex: 1; padding: 5px; cursor: pointer;">🗑 Delete</button>
+            </div>
           </div>
-        </div>
-      `);
+        `);
 
-    markers[loc._id] = marker;
+      markers[loc._id] = marker;
 
-    // Add to list
-    const li = document.createElement("li");
-    li.className = "location-item";
-    li.innerHTML = `
-      <div class="location-name">${loc.name}</div>
-      <div class="location-category">${loc.category}</div>
-    `;
-    li.onclick = () => {
-      map.setView([lat, lng], 16);
-      marker.openPopup();
-    };
-    listEl.appendChild(li);
-  });
+      // Add to list
+      const li = document.createElement("li");
+      li.className = "location-item";
+      li.innerHTML = `
+        <div class="location-name">${loc.name}</div>
+        <div class="location-category">${loc.category}</div>
+      `;
+      li.onclick = () => {
+        map.setView([lat, lng], 16);
+        marker.openPopup();
+      };
+      listEl.appendChild(li);
+    });
 
-  // Display count
-  console.log(`Total markers: ${filtered.length}`);
+    // Display count
+    console.log(`Total markers: ${filtered.length}`);
+  } catch (err) {
+    console.error("Error loading locations:", err);
+    listEl.innerHTML = '<li style="color: red;">❌ Error loading data</li>';
+  }
 }
 
 // Update kategori filter dengan data dari server

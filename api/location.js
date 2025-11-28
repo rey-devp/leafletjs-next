@@ -4,9 +4,18 @@ const BASE_URL = "https://leafletjs-express.vercel.app/places";
 /* ===================== GET ALL ===================== */
 export async function getAllLocations() {
   try {
+    console.log("Fetching from:", BASE_URL);
     const res = await fetch(BASE_URL);
-    if (!res.ok) throw new Error("Failed to fetch locations");
-    return await res.json();
+    console.log("Response status:", res.status);
+    
+    if (!res.ok) {
+      console.error("Failed to fetch, status:", res.status);
+      return [];
+    }
+    
+    const data = await res.json();
+    console.log("Data loaded:", data);
+    return data;
   } catch (err) {
     console.error("getAllLocations error:", err);
     return [];
@@ -28,6 +37,7 @@ export async function getLocationById(id) {
 /* ===================== CREATE ===================== */
 export async function createLocation(data) {
   try {
+    console.log("Creating location with data:", data);
     const res = await fetch(BASE_URL, {
       method: "POST",
       headers: {
@@ -42,12 +52,15 @@ export async function createLocation(data) {
       }),
     });
 
+    console.log("Create response status:", res.status);
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || "Failed to create location");
     }
 
-    return await res.json();
+    const result = await res.json();
+    console.log("Location created:", result);
+    return result;
   } catch (err) {
     console.error("createLocation error:", err);
     throw err;
@@ -57,6 +70,7 @@ export async function createLocation(data) {
 /* ===================== UPDATE ===================== */
 export async function updateLocation(id, data) {
   try {
+    console.log("Updating location:", id, data);
     const res = await fetch(`${BASE_URL}/${id}`, {
       method: "PUT",
       headers: {
@@ -73,12 +87,15 @@ export async function updateLocation(id, data) {
       }),
     });
 
+    console.log("Update response status:", res.status);
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || "Failed to update location");
     }
 
-    return await res.json();
+    const result = await res.json();
+    console.log("Location updated:", result);
+    return result;
   } catch (err) {
     console.error("updateLocation error:", err);
     throw err;
@@ -88,16 +105,20 @@ export async function updateLocation(id, data) {
 /* ===================== DELETE ===================== */
 export async function deleteLocation(id) {
   try {
+    console.log("Deleting location:", id);
     const res = await fetch(`${BASE_URL}/${id}`, {
       method: "DELETE",
     });
 
+    console.log("Delete response status:", res.status);
     if (!res.ok) {
       const error = await res.json();
       throw new Error(error.error || "Failed to delete location");
     }
 
-    return await res.json();
+    const result = await res.json();
+    console.log("Location deleted:", result);
+    return result;
   } catch (err) {
     console.error("deleteLocation error:", err);
     throw err;
