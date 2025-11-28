@@ -7,12 +7,12 @@ export async function getAllLocations() {
     console.log("Fetching from:", BASE_URL);
     const res = await fetch(BASE_URL);
     console.log("Response status:", res.status);
-    
+
     if (!res.ok) {
       console.error("Failed to fetch, status:", res.status);
       return [];
     }
-    
+
     const data = await res.json();
     console.log("Data loaded:", data);
     return data;
