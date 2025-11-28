@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-// @ts-expect-error - CSS import
 import "./globals.css";
-// @ts-expect-error - leaflet CSS import
 import "leaflet/dist/leaflet.css";
 
 const geistSans = Geist({
