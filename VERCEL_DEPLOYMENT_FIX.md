@@ -9,6 +9,7 @@ Type error: Unused '@ts-expect-error' directive.
 ## 🛠️ Solution
 
 ### Option 1: Clear Vercel Cache (Recommended)
+
 1. Go to Vercel Dashboard
 2. Select your project
 3. Go to **Settings** → **Advanced** → **Deployment Protection**
@@ -21,6 +22,7 @@ Type error: Unused '@ts-expect-error' directive.
    ```
 
 ### Option 2: Manual Git Push with Cache Invalidation
+
 ```bash
 cd your-project
 git add .
@@ -31,6 +33,7 @@ git push origin master
 Then go to Vercel and click **"Redeploy"** on the failing deployment.
 
 ### Option 3: Using Vercel CLI
+
 ```bash
 # Install Vercel CLI if not already
 npm install -g vercel
@@ -60,6 +63,7 @@ The local repository has been updated with:
 ## 🧪 Local Verification
 
 Build succeeds locally:
+
 ```bash
 bun run build
 # ✓ Compiled successfully
@@ -71,11 +75,13 @@ bun run build
 ## 🚀 Next Steps
 
 1. **Push Changes to GitHub** (already done)
+
    ```bash
    git push origin master
    ```
 
 2. **Trigger Vercel Redeploy**
+
    - Option A: Go to Vercel Dashboard → Click "Redeploy" button
    - Option B: Use CLI: `vercel deploy --prod --force`
    - Option C: Make a new commit to trigger auto-deploy
@@ -88,6 +94,7 @@ bun run build
 ## 💡 Pro Tips
 
 - If still failing after redeploy, check:
+
   - GitHub shows the latest commit
   - Vercel is using correct branch (master)
   - Environment variables are set in Vercel
@@ -98,6 +105,7 @@ bun run build
 ## 📞 Contact Backend Team
 
 Ensure backend API is accessible:
+
 - Production: https://your-backend-api.com/api/locations
 - Update `NEXT_PUBLIC_API_URL` in Vercel settings
 
