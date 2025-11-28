@@ -1,3 +1,4 @@
+// Use deployed MongoDB API endpoint
 const BASE_URL = "https://leafletjs-express.vercel.app/places";
 
 /* ===================== GET ALL ===================== */

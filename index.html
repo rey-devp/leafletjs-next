@@ -2,24 +2,64 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Geo Map</title>
+    <title>Geo CRUD App</title>
 
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <header>
-      <h1>📍 Geo Location Map</h1>
-      <p>LeafletJS + Vanilla JS (no drama)</p>
-    </header>
+    <aside>
+      <h2>📍 Locations</h2>
 
-    <div id="map"></div>
+      <!-- FILTER -->
+      <select id="categoryFilter">
+        <option value="all">All Category</option>
+        <option value="Public Space">Public Space</option>
+        <option value="Tempat Wisata">Tempat Wisata</option>
+        <option value="Restoran">Restoran</option>
+        <option value="Toko">Toko</option>
+      </select>
 
-    <!-- Leaflet JS -->
+      <!-- LIST -->
+      <ul id="locationList"></ul>
+    </aside>
+
+    <main>
+      <div id="map"></div>
+
+      <!-- FORM CRUD -->
+      <form id="locationForm">
+        <h3 id="formTitle">Tambah Lokasi</h3>
+
+        <input type="hidden" id="locationId" />
+
+        <input type="text" id="name" placeholder="Nama tempat" required />
+        <textarea id="description" placeholder="Deskripsi"></textarea>
+
+        <input type="text" id="category" placeholder="Kategori" required />
+
+        <input
+          type="number"
+          step="any"
+          id="latitude"
+          placeholder="Latitude"
+          required
+        />
+        <input
+          type="number"
+          step="any"
+          id="longitude"
+          placeholder="Longitude"
+          required
+        />
+
+        <button type="submit">💾 Simpan</button>
+        <button type="button" id="cancelEdit" hidden>❌ Cancel</button>
+      </form>
+    </main>
+
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="js/map.js"></script>
-    <script src="js/main.js"></script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>
