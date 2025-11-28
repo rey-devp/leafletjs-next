@@ -9,12 +9,18 @@ interface CategoryFilterProps {
   categories: string[];
   selectedCategories: string[];
   onCategoryChange: (selected: string[]) => void;
+  onShowFiltered?: () => void;
+  filteredCount?: number;
+  totalCount?: number;
 }
 
 export function CategoryFilter({
   categories,
   selectedCategories,
   onCategoryChange,
+  onShowFiltered,
+  filteredCount = 0,
+  totalCount = 0,
 }: CategoryFilterProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,7 +41,7 @@ export function CategoryFilter({
 
   return (
     <div className="w-full">
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-3 flex-wrap">
         <label className="text-sm font-medium text-gray-700">
           Filter Kategori:
         </label>
@@ -55,6 +61,17 @@ export function CategoryFilter({
         >
           Pilih Semua
         </Button>
+        {selectedCategories.length > 0 && (
+          <>
+            <Button
+              size="sm"
+              onClick={onShowFiltered}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Tampilkan ({filteredCount}/{totalCount})
+            </Button>
+          </>
+        )}
       </div>
 
       {/* Desktop view - horizontal grid */}

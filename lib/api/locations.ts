@@ -3,13 +3,13 @@ import { Location, GeoJSONFeatureCollection } from "@/lib/types/location";
 
 // Backend Express URL (default: http://localhost:4000)
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-const API_ENDPOINT = `${API_BASE_URL}/locations`;
+const API_ENDPOINT = `${API_BASE_URL}/places`;
 
 // ==================== FETCH OPERATIONS ====================
 
 /**
  * Fetch semua lokasi dari backend
- * GET /locations
+ * GET /api/locations
  */
 export async function fetchLocations(): Promise<Location[]> {
   try {
@@ -18,6 +18,7 @@ export async function fetchLocations(): Promise<Location[]> {
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-store",
     });
 
     if (!response.ok) {
@@ -25,16 +26,24 @@ export async function fetchLocations(): Promise<Location[]> {
     }
 
     const data = await response.json();
-    return data;
+
+    // Handle both direct array and data wrapper
+    if (Array.isArray(data)) {
+      return data;
+    } else if (data.data && Array.isArray(data.data)) {
+      return data.data;
+    }
+
+    return [];
   } catch (error) {
     console.error("Failed to fetch locations:", error);
-    return [];
+    throw error;
   }
 }
 
 /**
  * Fetch lokasi berdasarkan ID
- * GET /locations/:id
+ * GET /api/locations/:id
  */
 export async function fetchLocationById(id: string): Promise<Location | null> {
   try {
@@ -43,6 +52,7 @@ export async function fetchLocationById(id: string): Promise<Location | null> {
       headers: {
         "Content-Type": "application/json",
       },
+      cache: "no-store",
     });
 
     if (!response.ok) {
@@ -50,10 +60,10 @@ export async function fetchLocationById(id: string): Promise<Location | null> {
     }
 
     const data = await response.json();
-    return data;
+    return data.data || data;
   } catch (error) {
     console.error("Failed to fetch location by ID:", error);
-    return null;
+    throw error;
   }
 }
 
@@ -76,7 +86,7 @@ export async function fetchLocationsByCategory(
 
 /**
  * Buat lokasi baru
- * POST /locations
+ * POST /api/locations
  */
 export async function createLocation(
   name: string,
@@ -95,8 +105,10 @@ export async function createLocation(
         name,
         description,
         category,
-        latitude, // API mengharapkan latitude dan longitude terpisah
-        longitude,
+        location: {
+          type: "Point",
+          coordinates: [longitude, latitude], // GeoJSON format: [lng, lat]
+        },
       }),
     });
 
@@ -105,10 +117,10 @@ export async function createLocation(
     }
 
     const data = await response.json();
-    return data;
+    return data.data || data;
   } catch (error) {
     console.error("Failed to create location:", error);
-    return null;
+    throw error;
   }
 }
 
@@ -116,7 +128,7 @@ export async function createLocation(
 
 /**
  * Update lokasi
- * PUT /locations/:id
+ * PATCH /api/locations/:id
  */
 export async function updateLocation(
   id: string,
@@ -129,12 +141,24 @@ export async function updateLocation(
   }>
 ): Promise<Location | null> {
   try {
+    const payload: Record<string, unknown> = { ...updates };
+
+    // Convert latitude/longitude to GeoJSON format if provided
+    if (updates.latitude !== undefined && updates.longitude !== undefined) {
+      payload.location = {
+        type: "Point",
+        coordinates: [updates.longitude, updates.latitude],
+      };
+      delete payload.latitude;
+      delete payload.longitude;
+    }
+
     const response = await fetch(`${API_ENDPOINT}/${id}`, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updates),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -142,10 +166,10 @@ export async function updateLocation(
     }
 
     const data = await response.json();
-    return data;
+    return data.data || data;
   } catch (error) {
     console.error("Failed to update location:", error);
-    return null;
+    throw error;
   }
 }
 
@@ -153,7 +177,7 @@ export async function updateLocation(
 
 /**
  * Hapus lokasi
- * DELETE /locations/:id
+ * DELETE /api/locations/:id
  */
 export async function deleteLocation(id: string): Promise<boolean> {
   try {
@@ -171,7 +195,7 @@ export async function deleteLocation(id: string): Promise<boolean> {
     return true;
   } catch (error) {
     console.error("Failed to delete location:", error);
-    return false;
+    throw error;
   }
 }
 
