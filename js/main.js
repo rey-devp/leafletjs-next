@@ -110,10 +110,24 @@ form.onsubmit = async (e) => {
   try {
     if (locationIdEl.value) {
       await updateLocation(locationIdEl.value, data);
-      alert("✅ Lokasi berhasil diupdate!");
+      await Swal.fire({
+        title: "✅ Berhasil!",
+        text: "Lokasi berhasil diupdate",
+        icon: "success",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3b82f6",
+        allowOutsideClick: false,
+      });
     } else {
       await createLocation(data);
-      alert("✅ Lokasi berhasil ditambahkan!");
+      await Swal.fire({
+        title: "✅ Berhasil!",
+        text: "Lokasi berhasil ditambahkan",
+        icon: "success",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3b82f6",
+        allowOutsideClick: false,
+      });
     }
 
     form.reset();
@@ -122,7 +136,14 @@ form.onsubmit = async (e) => {
     formTitle.textContent = "Tambah Lokasi";
     loadLocations();
   } catch (error) {
-    alert("❌ Error: " + error.message);
+    await Swal.fire({
+      title: "❌ Error!",
+      text: error.message,
+      icon: "error",
+      confirmButtonText: "OK",
+      confirmButtonColor: "#ef4444",
+      allowOutsideClick: false,
+    });
   }
 };
 
@@ -132,14 +153,18 @@ filterEl.onchange = () => {
   loadLocations();
 };
 
-/* MAP CLICK → AUTO FILL (single click) */
+/* MAP CLICK → AUTO FILL & CREATE MARKER */
 map.on("click", (e) => {
   const latEl = document.getElementById("latitude");
   const lngEl = document.getElementById("longitude");
+  const locationIdEl = document.getElementById("locationId");
+  const nameEl = document.getElementById("name");
 
-  if (!latEl.value || !lngEl.value) {
+  // Reset form jika tidak sedang edit
+  if (!locationIdEl.value) {
     latEl.value = e.latlng.lat;
     lngEl.value = e.latlng.lng;
+    nameEl.focus();
   }
 });
 
@@ -165,19 +190,43 @@ window.editLocation = (id) => {
   formTitle.textContent = `Edit: ${loc.name}`;
   cancelEdit.hidden = false;
 
-  // Scroll ke form
-  form.scrollIntoView({ behavior: "smooth" });
   nameEl.focus();
 };
 
 window.removeLocation = async (id) => {
-  if (confirm("Yakin hapus lokasi ini?")) {
+  const result = await Swal.fire({
+    title: "Hapus Lokasi?",
+    text: "Data akan dihapus dan tidak bisa dikembalikan",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#ef4444",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Ya, Hapus",
+    cancelButtonText: "Batal",
+    allowOutsideClick: false,
+  });
+
+  if (result.isConfirmed) {
     try {
       await deleteLocation(id);
-      alert("✅ Lokasi berhasil dihapus!");
+      await Swal.fire({
+        title: "✅ Terhapus!",
+        text: "Lokasi berhasil dihapus",
+        icon: "success",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3b82f6",
+        allowOutsideClick: false,
+      });
       loadLocations();
     } catch (error) {
-      alert("❌ Error: " + error.message);
+      await Swal.fire({
+        title: "❌ Error!",
+        text: error.message,
+        icon: "error",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#ef4444",
+        allowOutsideClick: false,
+      });
     }
   }
 };

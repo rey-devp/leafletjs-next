@@ -5,10 +5,14 @@
     <title>Geo CRUD App</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <aside>
+    <aside class="left-sidebar">
       <h2>📍 Locations</h2>
 
       <!-- FILTER -->
@@ -26,8 +30,10 @@
 
     <main>
       <div id="map"></div>
+    </main>
 
-      <!-- FORM CRUD -->
+    <!-- FORM CRUD - RIGHT SIDEBAR -->
+    <aside class="right-sidebar">
       <form id="locationForm">
         <h3 id="formTitle">Tambah Lokasi</h3>
 
@@ -36,7 +42,13 @@
         <input type="text" id="name" placeholder="Nama tempat" required />
         <textarea id="description" placeholder="Deskripsi"></textarea>
 
-        <input type="text" id="category" placeholder="Kategori" required />
+        <select id="category" required>
+          <option value="">-- Pilih Kategori --</option>
+          <option value="Public Space">Public Space</option>
+          <option value="Tempat Wisata">Tempat Wisata</option>
+          <option value="Restoran">Restoran</option>
+          <option value="Toko">Toko</option>
+        </select>
 
         <input
           type="number"
@@ -56,9 +68,10 @@
         <button type="submit">💾 Simpan</button>
         <button type="button" id="cancelEdit" hidden>❌ Cancel</button>
       </form>
-    </main>
+    </aside>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="js/map.js"></script>
     <script type="module" src="js/main.js"></script>
   </body>

@@ -14,6 +14,19 @@ aside {
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
 }
 
+.left-sidebar {
+  order: 1;
+}
+
+.right-sidebar {
+  width: 280px;
+  background: white;
+  padding: 15px;
+  overflow-y: auto;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+  order: 3;
+}
+
 aside h2 {
   margin: 0 0 15px 0;
   font-size: 18px;
@@ -73,6 +86,7 @@ main {
   flex: 1;
   position: relative;
   background: #f1f5f9;
+  order: 2;
 }
 
 #map {
@@ -81,15 +95,9 @@ main {
 }
 
 form {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
   background: white;
   padding: 15px;
-  width: 260px;
   border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e2e8f0;
 }
 
 form h3 {
@@ -99,7 +107,8 @@ form h3 {
 }
 
 form input,
-form textarea {
+form textarea,
+form select {
   width: 100%;
   margin-bottom: 8px;
   padding: 8px;
@@ -111,7 +120,8 @@ form textarea {
 }
 
 form input:focus,
-form textarea:focus {
+form textarea:focus,
+form select:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -172,4 +182,53 @@ aside::-webkit-scrollbar-thumb {
 
 aside::-webkit-scrollbar-thumb:hover {
   background: #475569;
+}
+
+/* ===== SweetAlert2 Custom Styling ===== */
+.swal2-container {
+  z-index: 9999 !important;
+}
+
+.swal2-popup {
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+.swal2-title {
+  font-size: 20px !important;
+  color: #1e293b !important;
+  margin-bottom: 10px !important;
+}
+
+.swal2-html-container {
+  color: #64748b !important;
+  font-size: 14px !important;
+}
+
+.swal2-confirm {
+  border-radius: 6px !important;
+  padding: 8px 24px !important;
+  font-weight: 600 !important;
+}
+
+.swal2-cancel {
+  border-radius: 6px !important;
+  padding: 8px 24px !important;
+  font-weight: 600 !important;
+}
+
+.swal2-icon {
+  border-color: transparent !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: transparent !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: transparent !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: transparent !important;
 }

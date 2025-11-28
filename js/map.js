@@ -29,24 +29,6 @@ map.on("dblclick", (e) => {
   document.getElementById("latitude").value = e.latlng.lat;
   document.getElementById("longitude").value = e.latlng.lng;
 
-  // Scroll ke form
-  const form = document.getElementById("locationForm");
-  form.scrollIntoView({ behavior: "smooth" });
-
   // Focus ke input pertama
   document.getElementById("name").focus();
-
-  // Highlight form
-  form.style.animation = "highlight 0.5s ease-in-out";
 });
-
-// CSS Animation untuk highlight form
-const style = document.createElement("style");
-style.textContent = `
-  @keyframes highlight {
-    0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
-    50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
-    100% { box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); }
-  }
-`;
-document.head.appendChild(style);
